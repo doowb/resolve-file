@@ -16,13 +16,35 @@ var resolveFile = require('resolve-file');
 
 ## API
 
-<!-- add a path or glob pattern for files with code comments to use for docs  -->
-{%= apidocs("index.js") %}
+### [resolveFile](index.js#L36)
+
+Resolve the path to a file located in one of the following places:
+
+* local to the current project (`'./index.js'`)
+* absolute (`'/usr/something.rc'`)
+* node module "main" file (`'cwd'`)
+* specific file inside a node module (`'cwd/LICENSE'`)
+* file located in user's home directory (`'~/.npmrc'`)
+
+**Params**
+
+* `name` **{String}**: Filename to resolve
+* `options` **{Object}**: Additional options to specify `cwd`
+* `returns` **{String}**: Resolve `filepath` if found
+
+**Example**
+
+```js
+var fp = resolveFile('./index.js')
+//=> /path/to/resolve-file/index.js
+```
 
 ## Related projects
 
-<!-- add an array of related projects, then un-escape the helper -->
-{%= related([]) %}
+* [cwd](https://github.com/jonschlinkert/cwd): Easily get the CWD (current working directory) of a project based on package.json, optionally starting… [more](https://github.com/jonschlinkert/cwd)
+* [expand-tilde](https://github.com/jonschlinkert/expand-tilde): Bash-like tilde expansion for node.js. Expands a leading tilde in a file path to the… [more](https://github.com/jonschlinkert/expand-tilde)
+* [look-up](https://github.com/jonschlinkert/look-up): Like findup-sync and supports the same features but 20x-40x faster on avg.
+* [resolve](https://github.com/substack/node-resolve): resolve like require.resolve() on behalf of files asynchronously and synchronously
 
 ## Running tests
 

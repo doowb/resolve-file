@@ -11,7 +11,6 @@ var fs = require('fs');
 var path = require('path');
 var expandTilde = require('expand-tilde');
 var resolve = require('resolve');
-var pkg = require('load-pkg');
 var dir = require('cwd');
 
 /**
