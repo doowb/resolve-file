@@ -34,4 +34,9 @@ describe('resolve-file', function () {
     var fp = resolve('cwd/LICENSE');
     assert.equal(fp, path.resolve(process.cwd(), './node_modules/cwd/LICENSE'));
   });
+
+  it('should resolve to a file in a node module using `cwd` option', function () {
+    var fp = resolve('LICENSE', { cwd: './node_modules/cwd' });
+    assert.equal(fp, path.resolve(process.cwd(), './node_modules/cwd/LICENSE'));
+  });
 });
