@@ -14,6 +14,26 @@ var resolve = require('resolve');
 var pkg = require('load-pkg');
 var dir = require('cwd');
 
+/**
+ * Resolve the path to a file located in one of the following places:
+ *
+ *  - local to the current project (`'./index.js'`)
+ *  - absolute (`'/usr/something.rc'`)
+ *  - node module "main" file (`'cwd'`)
+ *  - specific file inside a node module (`'cwd/LICENSE'`)
+ *  - file located in user's home directory (`'~/.npmrc'`)
+ *
+ * ```js
+ * var fp = resolveFile('./index.js')
+ * //=> /path/to/resolve-file/index.js
+ * ```
+ *
+ * @param  {String} `name` Filename to resolve
+ * @param  {Object} `options` Additional options to specify `cwd`
+ * @return {String} Resolve `filepath` if found
+ * @api public
+ */
+
 function resolveFile(name, options) {
   options = options || {};
   var cwd = dir(options.cwd || process.cwd());
@@ -46,5 +66,10 @@ function resolveFile(name, options) {
   var fp = path.resolve(cwd, name);
   return fs.existsSync(fp) ? fp : null;
 }
+
+/**
+ * Export `resolveFile`
+ * @type {Function}
+ */
 
 module.exports = resolveFile;
