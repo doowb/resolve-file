@@ -7,11 +7,8 @@
 
 'use strict';
 
-var fs = require('fs');
 var path = require('path');
-var expandTilde = require('expand-tilde');
-var resolve = require('resolve');
-var dir = require('cwd');
+var utils = require('./utils');
 
 /**
  * Resolve the path to a file located in one of the following places:
@@ -34,8 +31,10 @@ var dir = require('cwd');
  */
 
 function resolveFile(name, options) {
-  options = options || {};
-  var cwd = dir(options.cwd || process.cwd());
+  var opts = utils.extend({cwd: process.cwd()}, options);
+  var cwd = utils.cwd(opts.cwd);
+  var fp;
+
   var first = name.charAt(0);
   if (first === '.') {
     return path.resolve(cwd, name);
@@ -46,24 +45,26 @@ function resolveFile(name, options) {
   }
 
   if (first === '~') {
-    return expandTilde(name);
+    return utils.expandTilde(name);
   }
 
   try {
-    var file, i;
-    if ((i = name.indexOf('/')) !== -1) {
-      var fp = resolve.sync(name.slice(0, i));
-      var rest = path.normalize(name.slice(i + 1));
-      var res = path.resolve(path.dirname(fp), rest);
-      if (fs.existsSync(res)) {
-        return res;
+    if (/[\\\/]/.test(name)) {
+      var basename = path.basename(name);
+      var modulePath = utils.resolve.sync(path.dirname(name));
+      var filepath = path.resolve(path.dirname(modulePath), basename);
+      if (utils.exists(filepath)) {
+        return filepath;
       }
     }
-    return resolve.sync(name);
+    return utils.resolve.sync(name);
   } catch (err) {};
 
-  var fp = path.resolve(cwd, name);
-  return fs.existsSync(fp) ? fp : null;
+  fp = path.resolve(cwd, name);
+  if (utils.exists(fp)) {
+    return fp;
+  }
+  return null;
 }
 
 /**

@@ -10,7 +10,8 @@
   },
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "utils.js"
   ],
   "main": "index.js",
   "engines": {
@@ -20,13 +21,18 @@
     "test": "mocha"
   },
   "dependencies": {
-    "cwd": "^0.9.1",
-    "expand-tilde": "^1.2.1",
+    "cwd": "^0.10.0",
+    "expand-tilde": "^1.2.2",
+    "extend-shallow": "^2.0.1",
+    "fs-exists-sync": "^0.1.0",
+    "lazy-cache": "^2.0.1",
     "resolve": "^1.1.7"
   },
   "devDependencies": {
+    "global-modules": "^0.2.2",
     "gulp-format-md": "^0.1.9",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "npm-install-global": "^0.1.0"
   },
   "keywords": [
     "file",
