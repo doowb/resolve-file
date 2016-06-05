@@ -10,16 +10,13 @@ var npm = require('npm-install-global');
 var expandTilde = require('expand-tilde');
 var resolve = require('../');
 
-describe('resolve-file', function() {
+describe('resolve filepath', function() {
   before(function(cb) {
     if (!exists(path.resolve(gm, 'generate-foo'))) {
       npm.install('generate-foo', cb);
     } else {
       cb();
     }
-  });
-  after(function(cb) {
-    npm.uninstall('generate-foo', cb);
   });
 
   it('should resolve a file local to the default cwd', function() {

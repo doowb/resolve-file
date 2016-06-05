@@ -7,6 +7,7 @@
 
 'use strict';
 
+var fs = require('fs');
 var path = require('path');
 var utils = require('./utils');
 
@@ -20,7 +21,7 @@ var utils = require('./utils');
  *  - file located in user's home directory (`'~/.npmrc'`)
  *
  * ```js
- * var fp = resolveFile('./index.js')
+ * var fp = resolve('./index.js')
  * //=> /path/to/resolve-file/index.js
  * ```
  *
@@ -30,46 +31,95 @@ var utils = require('./utils');
  * @api public
  */
 
-function resolveFile(name, options) {
+function resolve(name, options) {
   var opts = utils.extend({cwd: process.cwd()}, options);
   var cwd = utils.cwd(opts.cwd);
   var fp;
 
   var first = name.charAt(0);
   if (first === '.') {
-    return path.resolve(cwd, name);
+    fp = path.resolve(cwd, name);
+    return utils.exists(fp) ? fp : null;
   }
 
   if (first === '/') {
-    return path.resolve(name);
+    fp = path.resolve(name);
+    return utils.exists(fp) ? fp : null;
   }
 
   if (first === '~') {
-    return utils.expandTilde(name);
+    fp = utils.expandTilde(name);
+    return utils.exists(fp) ? fp : null;
   }
-
-  try {
-    if (/[\\\/]/.test(name)) {
-      var basename = path.basename(name);
-      var modulePath = utils.resolve.sync(path.dirname(name));
-      var filepath = path.resolve(path.dirname(modulePath), basename);
-      if (utils.exists(filepath)) {
-        return filepath;
-      }
-    }
-    return utils.resolve.sync(name);
-  } catch (err) {};
 
   fp = path.resolve(cwd, name);
   if (utils.exists(fp)) {
     return fp;
   }
+
+  try {
+    if (/[\\\/]/.test(name)) {
+      var basename = path.basename(name);
+      var modulePath = require.resolve(path.dirname(name));
+      var filepath = path.resolve(path.dirname(modulePath), basename);
+      if (utils.exists(filepath)) {
+        return filepath;
+      }
+    }
+    return require.resolve(name);
+  } catch (err) {};
   return null;
 }
 
+resolve.file = function(name, options) {
+  var opts = utils.extend({cwd: process.cwd()}, options);
+  var cwd = utils.cwd(opts.cwd);
+  var first = name.charAt(0);
+  var file, fp;
+
+  switch (first) {
+    case '~':
+      fp = utils.expandTilde(name);
+      break;
+    case '.':
+    default: {
+      fp = path.resolve(cwd, name);
+      break;
+    }
+  }
+
+  if (fp.indexOf('npm:') === 0) {
+    fp = path.resolve(utils.gm, fp.slice(4));
+  }
+
+  if (!utils.exists(fp)) {
+    try {
+      if (/[\\\/]/.test(name)) {
+        var basename = path.basename(name);
+        var modulePath = require.resolve(path.dirname(name));
+        fp = path.resolve(path.dirname(modulePath), basename);
+      }
+
+      if (!utils.exists(fp)) {
+        fp = require.resolve(name);
+      }
+    } catch (err) {
+      if (err.code !== 'MODULE_NOT_FOUND') {
+        throw err;
+      }
+    };
+  }
+
+  if (utils.exists(fp)) {
+    return utils.createFile({path: fp, cwd: cwd}, opts.resolve);
+  }
+
+  return null;
+};
+
 /**
- * Export `resolveFile`
+ * Export `resolve`
  * @type {Function}
  */
 
-module.exports = resolveFile;
+module.exports = resolve;
