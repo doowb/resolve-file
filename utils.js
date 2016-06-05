@@ -14,16 +14,25 @@ require('cwd');
 require('expand-tilde');
 require('extend-shallow', 'extend');
 require('fs-exists-sync', 'exists');
-require('global-modules', 'gm');
-require('load-pkg');
+require('os-homedir', 'home');
+require('resolve');
 require = fn;
 
-utils.createFile = function(file, fn) {
-  var stat;
+/**
+ * Return the given `val`
+ */
 
-  /**
-   * Decorate `file` with `stat` object
-   */
+utils.identity = function(val) {
+  return val;
+};
+
+/**
+ * Decorate `file` with `stat`
+ */
+
+utils.decorate = function(file, fn) {
+  var resolve = fn || utils.identity;
+  var stat;
 
   Object.defineProperty(file, 'stat', {
     configurable: true,
@@ -41,43 +50,14 @@ utils.createFile = function(file, fn) {
         stat = fs.lstatSync(this.path);
         return stat;
       }
+      return null;
     }
   });
 
-  /**
-   * Decorate `file` with `basename` and `dirname`
-   */
-
-  file.basename = path.basename(file.path);
-  file.dirname = path.dirname(file.path);
-
-  // do a quick check to see if `file.basename` has a dot. If not, then check to see
-  // if `file.path` is a directory and if so attempt to resolve an actual file in
-  // the directory
-  if (!/\./.test(file.basename) && file.stat.isDirectory()) {
-    var orig = file.path;
-    var fp;
-
-    if (typeof fn === 'function') {
-      // allow `file.path` to be updated or returned
-      var res = fn(file);
-      fp = res || file.path;
-    } else {
-      var pkg = utils.loadPkg.sync(file.path || process.cwd());
-      if (pkg && pkg.main) {
-        fp = path.resolve(file.path, pkg.main);
-      } else {
-        // just resolve to `index.js` to keep this fast, since custom fn is
-        // allowed and we reset to orig if it doesn't exist anyway
-        fp = path.resolve(file.path, 'index.js');
-      }
-    }
-
-    if (fp && utils.exists(fp)) {
-      file.path = fp;
-      file.basename = path.basename(file.path);
-      file.dirname = path.dirname(file.path);
-    }
+  // support a custom `resolve` fn
+  var filepath = resolve.call(file, file);
+  if (typeof filepath === 'string') {
+    file.path = filepath;
   }
   return file;
 };

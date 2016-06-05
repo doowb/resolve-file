@@ -42,7 +42,7 @@ describe('resolve filepath', function() {
     assert.equal(fp, path.resolve(gm, 'generate-foo'));
   });
 
-  it('should resolve a file in a global module', function() {
+  it('should resolve a specified file in a global module', function() {
     var fp = resolve('generate-foo/generator.js', {cwd: gm});
     assert.equal(fp, path.resolve(gm, 'generate-foo/generator.js'));
   });

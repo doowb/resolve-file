@@ -49,12 +49,12 @@ describe('resolve file', function() {
 
   it('should resolve a global module', function() {
     var file = resolve.file('generate-foo', {cwd: gm});
-    assert.equal(file.dirname, path.resolve(gm, 'generate-foo'));
+    assert.equal(file.path, path.resolve(gm, 'generate-foo'));
   });
 
   it('should resolve the given file in a global module', function() {
-    var file = resolve.file('generate-foo/generator.js', {cwd: gm});
-    assert.equal(file.path, path.resolve(gm, 'generate-foo/generator.js'));
+    var file = resolve.file('generate-foo/verbfile.js', {cwd: gm});
+    assert.equal(file.path, path.resolve(gm, 'generate-foo/verbfile.js'));
   });
 
   it('should resolve the `pkg.main` file in a global module', function() {
