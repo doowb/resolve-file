@@ -51,8 +51,8 @@ utils.createFile = function(file, fn) {
   file.basename = path.basename(file.path);
   file.dirname = path.dirname(file.path);
 
-  // do a quick check to see if `file.basename` has a dot, if not, then check to see
-  // if `file.path` is a directory and, if so, attempt to resolve an actual file in
+  // do a quick check to see if `file.basename` has a dot. If not, then check to see
+  // if `file.path` is a directory and if so attempt to resolve an actual file in
   // the directory
   if (!/\./.test(file.basename) && file.stat.isDirectory()) {
     var orig = file.path;
