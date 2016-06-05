@@ -19,20 +19,24 @@
   "scripts": {
     "test": "mocha"
   },
-  "devDependencies": {
-    "mocha": "*"
-  },
   "dependencies": {
-    "cwd": "^0.7.0",
-    "expand-tilde": "^1.2.0",
-    "resolve": "^1.1.6"
+    "cwd": "^0.9.1",
+    "expand-tilde": "^1.2.1",
+    "resolve": "^1.1.7"
   },
+  "devDependencies": {
+    "mocha": "^2.5.3"
+  },
+  "keywords": [
+    "file",
+    "resolve"
+  ],
   "verb": {
     "related": {
       "list": [
         "cwd",
-        "look-up",
         "expand-tilde",
+        "look-up",
         "resolve"
       ]
     }

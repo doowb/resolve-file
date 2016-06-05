@@ -60,7 +60,7 @@ function resolveFile(name, options) {
       }
     }
     return resolve.sync(name);
-  } catch(err) {};
+  } catch (err) {};
 
   var fp = path.resolve(cwd, name);
   return fs.existsSync(fp) ? fp : null;
