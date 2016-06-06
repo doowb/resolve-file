@@ -26,7 +26,7 @@ var utils = require('./utils');
  *
  * @param  {String} `name` Filename to resolve
  * @param  {Object} `options` Additional options to specify `cwd`
- * @return {String} Resolve `filepath` if found
+ * @return {String} Resolved `filepath` if found
  * @api public
  */
 
@@ -34,6 +34,29 @@ function resolve(name, options) {
   var file = resolve.file(name, options);
   return file && file.path;
 }
+
+/**
+ * Resolve the path to a file located in one of the following places:
+ *
+ *  - local to the current project (`'./index.js'`)
+ *  - absolute (`'/usr/something.rc'`)
+ *  - node module "main" file (`'cwd'`)
+ *  - specific file inside a node module (`'cwd/LICENSE'`)
+ *  - file located in user's home directory (`'~/.npmrc'`)
+ *
+ * ```js
+ * var file = resolve.file('./index.js')
+ * //=> {
+ * //=>   cwd: '/path/to/resolve-file',
+ * //=>   path: '/path/to/resolve-file/index.js'
+ * //=> }
+ * ```
+ *
+ * @param  {String} `name` Filename to resolve
+ * @param  {Object} `options` Additional options to specify `cwd`
+ * @return {Object} File object with resolved `path` if found.
+ * @api public
+ */
 
 resolve.file = function(name, options) {
   var file = {};
