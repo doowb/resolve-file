@@ -87,10 +87,6 @@ resolve.file = function(name, options) {
         file.cwd = utils.home();
         file.path = utils.expandTilde(name);
         break;
-      case '@':
-        file.path = path.resolve(file.cwd, name.slice(2));
-        file.cwd = path.dirname(file.cwd);
-        break;
       case '.':
       default: {
         file.path = path.resolve(file.cwd, name);
