@@ -13,7 +13,7 @@ require('cwd');
 require('expand-tilde');
 require('extend-shallow', 'extend');
 require('fs-exists-sync', 'exists');
-require('os-homedir', 'home');
+require('homedir-polyfill', 'home');
 require('resolve');
 require = fn;
 
