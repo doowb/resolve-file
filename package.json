@@ -22,10 +22,10 @@
   },
   "dependencies": {
     "cwd": "^0.10.0",
-    "expand-tilde": "^1.2.2",
+    "expand-tilde": "^2.0.1",
     "extend-shallow": "^2.0.1",
     "fs-exists-sync": "^0.1.0",
-    "global-modules": "^0.2.2",
+    "global-modules": "^0.2.3",
     "homedir-polyfill": "^1.0.0",
     "lazy-cache": "^2.0.1",
     "resolve": "^1.1.7"
