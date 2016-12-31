@@ -54,10 +54,13 @@ utils.decorate = function(file, fn) {
   });
 
   // support a custom `resolve` fn
-  var filepath = resolve.call(file, file);
-  if (typeof filepath === 'string') {
-    file.path = filepath;
+  var result = resolve.call(file, file);
+  if (typeof result === 'string') {
+    file.path = result;
+  } else if (result) {
+    file = result;
   }
+
   return file;
 };
 
