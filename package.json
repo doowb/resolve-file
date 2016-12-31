@@ -1,7 +1,7 @@
 {
   "name": "resolve-file",
   "description": "Resolve an absolute file path from local directories, local node_modules or global node_modules.",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "homepage": "https://github.com/doowb/resolve-file",
   "author": "Brian Woodward (https://github.com/doowb)",
   "repository": "doowb/resolve-file",
