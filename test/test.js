@@ -22,14 +22,14 @@ describe('resolve filepath', function() {
   it('should resolve a file local to the default cwd', function() {
     var fp = resolve('test/fixtures/root.txt');
     assert.equal(fp, path.resolve(process.cwd(), 'test/fixtures/root.txt'));
-    assert.equal(fs.readFileSync(fp, 'utf8'), 'I am grot.\n');
+    assert.equal(fs.readFileSync(fp, 'utf8'), 'I am groot.\n');
   });
 
   it('should resolve a an absolute file', function() {
     var abs = path.resolve(process.cwd(), 'test/fixtures/root.txt');
     var fp = resolve(abs);
     assert.equal(fp, abs);
-    assert.equal(fs.readFileSync(fp, 'utf8'), 'I am grot.\n');
+    assert.equal(fs.readFileSync(fp, 'utf8'), 'I am groot.\n');
   });
 
   it('should resolve a file in the user home directory', function() {
