@@ -106,10 +106,11 @@ resolve.file = function(name, options) {
       }
 
       if (!utils.exists(file.path)) {
-        file.path = utils.resolve.sync(name);
+        file.path = utils.resolve.sync(name, {basedir: file.cwd});
         file.main = file.path;
       }
     } catch (err) {
+      // account for "not found" errors from node require or `resolve` lib
       if (err.code !== 'MODULE_NOT_FOUND' && !/Cannot find module/.test(err.message)) {
         throw err;
       }
